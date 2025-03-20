@@ -36,7 +36,7 @@ function getTitle({ search, type, location, remote }: JobFilter) {
 export async function generateMetadata({
   searchParams,
 }: PageProps): Promise<Metadata> {
-  const { search, type, location, remote } = await searchParams
+  const { search, type, location, remote } = searchParams
 
   return {
     title: `${getTitle({
@@ -48,9 +48,9 @@ export async function generateMetadata({
   }
 }
 
-export default async function Home(props: PageProps) {
+export default function Home(props: PageProps) {
   const { searchParams } = props
-  const { search, type, location, remote } = await searchParams
+  const { search, type, location, remote } = searchParams
 
   const filterValues: JobFilter = {
     search,

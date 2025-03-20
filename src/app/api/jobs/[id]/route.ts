@@ -3,8 +3,8 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const jobId = params.id; // Keep it as a string
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const jobId = (await params).id; // Keep it as a string
 
   const job = await prisma.job.findUnique({
     where: { id: jobId }, // id stays a string
