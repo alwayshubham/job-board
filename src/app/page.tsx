@@ -60,7 +60,7 @@ export default function Home(props: PageProps) {
   }
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <Card className="mb-8">
         <CardHeader className="text-center">
           <CardTitle className="text-4xl font-bold">

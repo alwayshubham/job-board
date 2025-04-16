@@ -33,6 +33,7 @@ export default function RootLayout({
       <body
         className={`min-w-[350px] ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        
         <Navbar />
         {children}
         <Footer />

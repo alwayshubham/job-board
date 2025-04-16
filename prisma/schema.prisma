@@ -6,9 +6,32 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  name     String?
+  password String
+  profile  Profile?
+  jobs     Job[]    // ✅ 1-to-many: one user has many jobs
+}
+
+model Profile {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String
+  contact    String
+  address    String
+  resumeUrl  String
+  createdAt  DateTime @default(now())
+  userId     Int?     @unique
+  jobId      Int?     // 👈 New field
+  users      User?    @relation(fields: [userId], references: [id])
+  job        Job?      @relation(fields: [jobId], references: [id])
+}
+
 
 model Job {
-  id               String   @id @default(uuid())
+  id               Int      @id @default(autoincrement())
   slug             String   @unique
   title            String
   type             String
@@ -23,6 +46,11 @@ model Job {
   approved         Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+profiles    Profile[]
+ userId Int?   // 👈 make it optional for now
+user   User?  @relation(fields: [userId], references: [id])
 
   @@map("jobs")
 }
+
+

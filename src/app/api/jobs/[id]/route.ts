@@ -1,19 +1,32 @@
+// app/api/jobs/[id]/route.ts
+
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
-const prisma = new PrismaClient();
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const jobId = Number(params.id);
 
-export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const jobId = (await params).id; // Keep it as a string
+    if (isNaN(jobId)) {
+      return NextResponse.json({ error: "Invalid job ID" }, { status: 400 });
+    }
 
-  const job = await prisma.job.findUnique({
-    where: { id: jobId }, // id stays a string
-  });
+    const job = await prisma.job.findUnique({
+      where: {
+        id: jobId,
+      },
+    });
 
-  if (!job) {
-    return NextResponse.json({ error: "Job not found" }, { status: 404 });
+    if (!job) {
+      return NextResponse.json({ error: "Job not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(job, { status: 200 });
+  } catch (error) {
+    console.error("GET /api/jobs/[id] error:", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
-
-  return NextResponse.json(job);
-}
-
+};
