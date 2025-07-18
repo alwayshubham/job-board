@@ -64,7 +64,7 @@ export default function JobListItem({
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Banknote className="h-4 w-4" />
-                <span>{formatCurrency(salary, "USD")}</span>
+                <span>{formatCurrency(salary, "INR")}/month</span>
               </div>
             </div>
           </div>

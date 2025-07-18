@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { login } from "@/actions/auth";
+import { logins } from "@/actions/auth";
 
 // Define initial state structure for better TS inference
 const initialState = {
@@ -14,7 +14,7 @@ const initialState = {
 };
 
 export default function Logins() {
-  const [state, action, isPending] = useActionState(login, initialState);
+  const [state, action, isPending] = useActionState(logins, initialState);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
@@ -71,7 +71,7 @@ export default function Logins() {
           {/* Link to Register */}
           <p className="text-sm text-center text-gray-600 mt-4">
             Dont have an account?{" "}
-            <Link href="/register" className="text-indigo-600 hover:underline">
+            <Link href="/registers" className="text-indigo-600 hover:underline">
               Register here
             </Link>
           </p>

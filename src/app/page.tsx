@@ -36,7 +36,8 @@ function getTitle({ search, type, location, remote }: JobFilter) {
 export async function generateMetadata({
   searchParams,
 }: PageProps): Promise<Metadata> {
-  const { search, type, location, remote } = searchParams
+  const resolvedParams = await searchParams; // <- ✅ Await here
+  const { search, type, location, remote } = resolvedParams || {};
 
   return {
     title: `${getTitle({
@@ -45,12 +46,14 @@ export async function generateMetadata({
       location,
       remote: remote === "true",
     })} | Jobs`,
-  }
+  };
 }
 
-export default function Home(props: PageProps) {
+
+export default async function Home(props: PageProps) {
   const { searchParams } = props
-  const { search, type, location, remote } = searchParams
+  const resolvedProps = await searchParams; 
+  const { search, type, location, remote } = resolvedProps 
 
   const filterValues: JobFilter = {
     search,

@@ -25,7 +25,7 @@ export default async function Navigation() {
         <div className="flex items-center gap-6">
           <NavLink label="Home" href="/" />
           <Button asChild>
-          <Link href="/jobs/new">Post a Job</Link>
+          <Link href="/registers">Employer Sign-up</Link>
         </Button>
 
           {authUser ? (
@@ -39,7 +39,7 @@ export default async function Navigation() {
             </>
           ) : (
             <>
-              <NavLink label="Register" href="/register" />
+              <NavLink label="condidate sign-up" href="/register" />
               <NavLink label="Login" href="/login" />
             </>
           )}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { register } from "@/actions/auth";
+import { registers } from "@/actions/auth";
 import Link from "next/link";
 
 export default function Registers() {
@@ -19,7 +19,7 @@ export default function Registers() {
     
 
     try {
-      const result = await register(formData);
+      const result = await registers(formData);
 
       if (result.errors) {
         const normalizedErrors: Record<string, string[]> = {};
@@ -43,7 +43,7 @@ export default function Registers() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-blue-50 to-indigo-100 p-6">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Create an Account</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Create an Employer Account</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -82,7 +82,7 @@ export default function Registers() {
         </form>
 
         <p className="text-center text-gray-600 mt-4">
-          Already have an account? <Link href="/login" className="text-blue-500 hover:underline">Login here</Link>
+          Already have an account? <Link href="/logins" className="text-blue-500 hover:underline">Login here</Link>
         </p>
       </div>
     </div>

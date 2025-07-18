@@ -130,8 +130,8 @@ export async function register(formData: FormData) {
   redirect("/dashboard");
 }
 
-  
-{/**Login action  */}
+
+{/**Login action  */ }
 
 
 export async function login(
@@ -179,6 +179,106 @@ export async function login(
   // Never reached, but required for TS
   return defaultState;
 }
+
+
+export async function registers(formData: FormData) {
+  const errors: Record<string, string | string[]> = {};
+
+  const email = formData.get("email") as string;
+  const name = formData.get("name") as string;
+  const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
+
+  if (!email) {
+    errors.email = "Email is required";
+  }
+  if (!name) {
+    errors.name = "Name is required";
+  }
+
+  if (!password || password.length < 6) {
+    errors.password = ["Password must be at least 6 characters"];
+  }
+
+  if (password !== confirmPassword) {
+    errors.confirmPassword = "Passwords do not match";
+  }
+
+  // Check for existing user
+  const existingUser = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (existingUser) {
+    errors.email = "Email is already registered";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return { errors };
+  }
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Save the user to the database
+  await prisma.user.create({
+    data: {
+      email,
+      name,
+      password: hashedPassword,
+    },
+  });
+
+  // Redirect on success
+  redirect("/dashboards");
+}
+
+export async function logins(
+  _prevState: LoginState, // This is needed for useActionState
+  formData: FormData
+): Promise<LoginState> {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  const validatedFields = LoginFormSchema.safeParse({ email, password });
+
+  if (!validatedFields.success) {
+    return {
+      errors: {
+        email: validatedFields.error.flatten().fieldErrors.email ?? [],
+        password: validatedFields.error.flatten().fieldErrors.password ?? [],
+      },
+      email,
+    };
+  }
+
+  const { email: validEmail, password: validPassword } = validatedFields.data;
+
+  const existingUser = await prisma.user.findUnique({ where: { email: validEmail } });
+
+  if (!existingUser) {
+    return {
+      errors: { email: ["Invalid credentials."], password: [] },
+      email: validEmail,
+    };
+  }
+
+  const matchedPassword = await bcrypt.compare(validPassword, existingUser.password);
+
+  if (!matchedPassword) {
+    return {
+      errors: { email: ["Invalid credentials."], password: [] },
+      email: validEmail,
+    };
+  }
+
+  await createSession(existingUser.id.toString());
+  redirect("/dashboards");
+
+  // Never reached, but required for TS
+  return defaultState;
+}
+
 
 export async function logout() {
   const cookieStore = await cookies();
