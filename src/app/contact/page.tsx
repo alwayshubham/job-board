@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function ContactPage() {
   return (
     <div className=" mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
@@ -32,7 +34,7 @@ export default function ContactPage() {
           <h2 className="text-2xl font-bold mb-4">Address</h2>
           <p>Scholiverse Educare Pvt. Ltd. 901A/B, Iris Tech Park, Sector 48, Gurugram, Haryana, India - 122018</p>
           <div className="my-4">
-            <img src="/google-map.png" alt="Google Maps" className="w-12 h-12" />
+            <Image src="/google-map.png" alt="Google Maps" className="w-12 h-12" />
           </div>
           <p className="text-gray-700">Working Hours: Monday to Friday, 10:00 AM – 6:00 PM</p>
         </div>

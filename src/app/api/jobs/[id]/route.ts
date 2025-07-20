@@ -5,10 +5,10 @@ import prisma from "@/lib/prisma";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const jobId = Number(params.id);
+    const jobId = Number(context.params.id);
 
     if (isNaN(jobId)) {
       return NextResponse.json({ error: "Invalid job ID" }, { status: 400 });
